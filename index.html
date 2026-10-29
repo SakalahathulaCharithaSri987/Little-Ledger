@@ -1,0 +1,573 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Little Ledger — Your Money Diary</title>
+  <meta name="description" content="Little Ledger is your gentle, simple personal money diary for tracking income, expenses, and savings." />
+  <meta name="theme-color" content="#F4EFE6" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Little Ledger home">
+        <span class="brand-icon" aria-hidden="true">✳</span>
+        <span class="brand-copy">
+          <span class="brand-name">Little Ledger</span>
+          <span class="brand-tagline">your money diary</span>
+        </span>
+      </a>
+
+      <div class="sidebar-caption">YOUR WORKSPACE</div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-btn active" data-view="dashboard" type="button" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">⌂</span>
+          <span class="nav-label">Dashboard</span>
+          <span class="nav-arrow" aria-hidden="true">↗</span>
+        </button>
+
+        <button class="nav-btn" data-view="expenses" type="button">
+          <span class="nav-icon" aria-hidden="true">↘</span>
+          <span class="nav-label">Expenses</span>
+        </button>
+
+        <button class="nav-btn" data-view="income" type="button">
+          <span class="nav-icon" aria-hidden="true">↗</span>
+          <span class="nav-label">Income</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-note">
+        <span class="sidebar-note-icon" aria-hidden="true">✿</span>
+        <p class="sidebar-note-title">Little steps add up.</p>
+        <p class="sidebar-note-text">Every rupee has a story. Make yours count.</p>
+        <span class="sidebar-note-decoration" aria-hidden="true">✳</span>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="footer-dot" aria-hidden="true"></span>
+        <span>Your private money space</span>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <header class="topbar">
+        <div class="page-heading">
+          <p class="eyebrow">
+            <span class="eyebrow-line" aria-hidden="true"></span>
+            YOUR PERSONAL FINANCE JOURNAL
+          </p>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p class="subtitle" id="pageSubtitle">Your money at a glance</p>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section class="view active" id="view-dashboard">
+
+        <!-- Heading and month picker on the same row -->
+        <div class="section-intro dashboard-intro">
+          <div>
+            <h2 class="section-title">
+              Your financial snapshot<span class="title-period">.</span>
+            </h2>
+          </div>
+
+          <label class="month-picker">
+            <span class="month-picker-icon" aria-hidden="true">▦</span>
+            <span class="month-picker-copy">
+              <span class="month-picker-label">VIEW MONTH</span>
+              <input type="month" id="monthPicker" aria-label="View month" />
+            </span>
+          </label>
+        </div>
+
+        <!-- INCOME AND SAVINGS CARDS -->
+        <div class="grid-two">
+
+          <article class="card" id="incomeCard">
+            <div class="card-topline">
+              <div class="metric-icon metric-icon-sage" aria-hidden="true">↗</div>
+              <span class="metric-label">MONTHLY OVERVIEW</span>
+            </div>
+
+            <h2>Total Income</h2>
+            <p class="hint">Enter your total income for this month (manual total).</p>
+
+            <form class="inline-form" id="monthlyIncomeForm" novalidate>
+              <label class="sr-only" for="monthlyIncomeInput">
+                Monthly income total in rupees
+              </label>
+
+              <div class="money-input">
+                <span aria-hidden="true">₹</span>
+                <input
+                  type="number"
+                  id="monthlyIncomeInput"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  inputmode="decimal"
+                />
+              </div>
+
+              <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <dl class="figures">
+              <div>
+                <dt>Manually entered total</dt>
+                <dd id="manualIncomeText">Not entered</dd>
+              </div>
+              <div>
+                <dt>Recorded income transactions</dt>
+                <dd id="txnIncomeText">₹0.00</dd>
+              </div>
+            </dl>
+
+            <div
+              class="bar-track"
+              role="progressbar"
+              aria-label="Income compared with expenses this month"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <div class="bar-fill bar-green" id="incomeBar" style="width:0%"></div>
+            </div>
+
+            <p class="bar-caption" id="incomeBarCaption">
+              Income compared with expenses this month
+            </p>
+          </article>
+
+          <article class="card" id="savingsCard">
+            <div class="card-topline">
+              <div class="metric-icon metric-icon-terracotta" aria-hidden="true">♡</div>
+              <span class="metric-label">YOUR LITTLE WINS</span>
+            </div>
+
+            <h2>Savings</h2>
+            <p class="hint">Enter how much you actually saved this month.</p>
+
+            <form class="inline-form" id="savingsForm" novalidate>
+              <label class="sr-only" for="savingsInput">Savings amount in rupees</label>
+
+              <div class="money-input">
+                <span aria-hidden="true">₹</span>
+                <input
+                  type="number"
+                  id="savingsInput"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  inputmode="decimal"
+                />
+              </div>
+
+              <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <dl class="figures">
+              <div>
+                <dt>Saved this month</dt>
+                <dd id="savingsText">Not entered</dd>
+              </div>
+              <div>
+                <dt>Share of income used</dt>
+                <dd id="savingsShareText">–</dd>
+              </div>
+            </dl>
+
+            <div
+              class="bar-track"
+              role="progressbar"
+              aria-label="Savings progress"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <div class="bar-fill bar-green" id="savingsBar" style="width:0%"></div>
+            </div>
+
+            <p class="bar-caption">
+              Savings are money set aside, not an expense.
+            </p>
+          </article>
+        </div>
+
+        <!-- DAILY EXPENSE CHART -->
+        <article class="card chart-card">
+          <div class="card-head">
+            <div>
+              <p class="card-overline">YOUR DAY-TO-DAY SPENDING</p>
+              <h2>Daily Expenses</h2>
+            </div>
+            <span class="chip" id="dailyTotalChip">₹0.00</span>
+          </div>
+
+          <div class="chart-scroll">
+            <div
+              class="chart"
+              id="dailyChart"
+              role="img"
+              aria-label="Bar chart of daily expenses for the selected month"
+            ></div>
+          </div>
+
+          <p class="chart-empty" id="dailyEmpty" hidden>
+            No expenses recorded this month yet.
+          </p>
+        </article>
+
+        <!-- MONTHLY EXPENSE CHART -->
+        <article class="card chart-card">
+          <div class="card-head">
+            <div>
+              <p class="card-overline">THE BIGGER PICTURE</p>
+              <h2>Monthly Expenses</h2>
+            </div>
+
+            <div class="range-switch" role="group" aria-label="Months shown">
+              <button type="button" class="range-btn active" data-range="6">6 months</button>
+              <button type="button" class="range-btn" data-range="12">12 months</button>
+              <button type="button" class="range-btn" data-range="all">All</button>
+            </div>
+          </div>
+
+          <div class="chart-scroll">
+            <div
+              class="chart"
+              id="monthlyChart"
+              role="img"
+              aria-label="Bar chart of total expenses per month"
+            ></div>
+          </div>
+
+          <p class="chart-empty" id="monthlyEmpty" hidden>
+            No expenses recorded yet.
+          </p>
+        </article>
+
+        <!-- REMAINING MONEY -->
+        <article class="card remaining-card" id="remainingCard">
+          <div class="remaining-heading">
+            <div>
+              <p class="card-overline">WHAT YOU HAVE LEFT</p>
+              <h2>Remaining Money</h2>
+              <p class="hint">
+                Remaining Money = Starting Balance + Total Income − Total Expenses
+              </p>
+            </div>
+            <span class="remaining-decoration" aria-hidden="true">₹</span>
+          </div>
+
+          <form class="inline-form" id="startingBalanceForm" novalidate>
+            <label class="field-label" for="startingBalanceInput">Starting balance</label>
+
+            <div class="money-input">
+              <span aria-hidden="true">₹</span>
+              <input
+                type="number"
+                id="startingBalanceInput"
+                step="0.01"
+                placeholder="0.00"
+                inputmode="decimal"
+              />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+          </form>
+
+          <div class="basis-row">
+            <label for="incomeBasis">Income counted in this calculation</label>
+            <select id="incomeBasis">
+              <option value="manual">Manually entered monthly total</option>
+              <option value="transactions">Recorded income transactions</option>
+            </select>
+          </div>
+
+          <dl class="breakdown">
+            <div>
+              <dt>Starting balance</dt>
+              <dd id="remStart">₹0.00</dd>
+            </div>
+            <div>
+              <dt>+ Total income</dt>
+              <dd id="remIncome" class="positive">₹0.00</dd>
+            </div>
+            <div>
+              <dt>− Total expenses</dt>
+              <dd id="remExpenses" class="negative">₹0.00</dd>
+            </div>
+            <div class="breakdown-total">
+              <dt>Remaining money</dt>
+              <dd id="remTotal">₹0.00</dd>
+            </div>
+          </dl>
+
+          <p class="note" id="remSavingsNote" hidden></p>
+        </article>
+
+        <footer class="page-footer">
+          <span aria-hidden="true">✳</span>
+          A gentler relationship with money starts one day at a time.
+        </footer>
+      </section>
+
+      <!-- EXPENSES -->
+      <section class="view" id="view-expenses">
+        <div class="section-intro">
+          <div>
+            <h2 class="section-title">
+              Your expenses<span class="title-period">.</span>
+            </h2>
+          </div>
+          <span class="section-flower" aria-hidden="true">↘</span>
+        </div>
+
+        <div class="split">
+
+          <!-- ADD EXPENSE FORM -->
+          <article class="card form-card">
+            <div class="form-card-heading">
+              <span class="form-icon expense-form-icon" aria-hidden="true">−</span>
+              <div>
+                <p class="card-overline">MONEY GOING OUT</p>
+                <h2 id="expenseFormTitle">Add Expense</h2>
+              </div>
+            </div>
+
+            <p class="form-intro">
+              Record a purchase or payment to keep your monthly picture clear.
+            </p>
+
+            <form id="expenseForm" novalidate>
+              <input type="hidden" id="expenseEditId" />
+
+              <div class="field">
+                <label for="expenseName">Expense Name</label>
+                <input
+                  type="text"
+                  id="expenseName"
+                  maxlength="60"
+                  placeholder="e.g. Groceries"
+                  autocomplete="off"
+                />
+                <small class="error" id="expenseNameError"></small>
+              </div>
+
+              <div class="field">
+                <label for="expenseAmount">Amount in ₹</label>
+                <input
+                  type="number"
+                  id="expenseAmount"
+                  min="0.01"
+                  step="0.01"
+                  placeholder="0.00"
+                  inputmode="decimal"
+                />
+                <small class="error" id="expenseAmountError"></small>
+              </div>
+
+              <!-- RESTORED EXPENSE CALENDAR -->
+              <div class="field">
+                <label for="expenseDate">Date</label>
+                <input type="date" id="expenseDate" required />
+                <small class="error" id="expenseDateError"></small>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="expenseSubmit">
+                  Save Expense
+                </button>
+                <button type="button" class="btn btn-ghost" id="expenseCancel" hidden>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </article>
+
+          <!-- EXPENSE TABLE -->
+          <article class="card table-card">
+            <div class="card-head">
+              <div>
+                <p class="card-overline">YOUR SPENDING RECORD</p>
+                <h2>Expenses this month</h2>
+              </div>
+              <span class="chip" id="expenseCount">0 entries</span>
+            </div>
+
+            <div class="table-wrap">
+              <table class="ledger-table" id="expenseTable">
+                <thead>
+                  <tr>
+                    <th>Expense Name</th>
+                    <th class="num">Amount</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+
+                <tbody id="expenseBody"></tbody>
+
+                <tfoot>
+                  <tr>
+                    <td colspan="2" data-label="Total Expenses">Total Expenses</td>
+                    <td colspan="2" class="num" id="expenseTotal">₹0.00</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" data-label="Remaining Money">Remaining Money</td>
+                    <td colspan="2" class="num" id="expenseRemaining">₹0.00</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <p class="empty-state" id="expenseEmpty">
+              No expenses for this month yet.
+            </p>
+          </article>
+        </div>
+
+        <footer class="page-footer">
+          <span aria-hidden="true">✳</span>
+          Small, mindful choices make a meaningful difference.
+        </footer>
+      </section>
+
+      <!-- INCOME -->
+      <section class="view" id="view-income">
+        <div class="section-intro">
+          <div>
+            <h2 class="section-title">
+              Your income<span class="title-period">.</span>
+            </h2>
+          </div>
+          <span class="section-flower" aria-hidden="true">↗</span>
+        </div>
+
+        <div class="split">
+
+          <!-- ADD INCOME FORM -->
+          <article class="card form-card">
+            <div class="form-card-heading">
+              <span class="form-icon income-form-icon" aria-hidden="true">+</span>
+              <div>
+                <p class="card-overline">MONEY COMING IN</p>
+                <h2 id="incomeFormTitle">Add Income</h2>
+              </div>
+            </div>
+
+            <form id="incomeForm" novalidate>
+              <input type="hidden" id="incomeEditId" />
+
+              <div class="field">
+                <label for="incomeName">Income Name or Source</label>
+                <input
+                  type="text"
+                  id="incomeName"
+                  maxlength="60"
+                  placeholder="e.g. Salary"
+                  autocomplete="off"
+                />
+                <small class="error" id="incomeNameError"></small>
+              </div>
+
+              <div class="field">
+                <label for="incomeAmount">Amount in ₹</label>
+                <input
+                  type="number"
+                  id="incomeAmount"
+                  min="0.01"
+                  step="0.01"
+                  placeholder="0.00"
+                  inputmode="decimal"
+                />
+                <small class="error" id="incomeAmountError"></small>
+              </div>
+
+              <!-- RESTORED INCOME CALENDAR -->
+              <div class="field">
+                <label for="incomeDate">Date</label>
+                <input type="date" id="incomeDate" required />
+                <small class="error" id="incomeDateError"></small>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="incomeSubmit">
+                  Save Income
+                </button>
+                <button type="button" class="btn btn-ghost" id="incomeCancel" hidden>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </article>
+
+          <!-- INCOME TABLE -->
+          <article class="card table-card">
+            <div class="card-head">
+              <div>
+                <p class="card-overline">YOUR EARNINGS RECORD</p>
+                <h2>Income this month</h2>
+              </div>
+              <span class="chip chip-green" id="incomeCount">0 entries</span>
+            </div>
+
+            <div class="table-wrap">
+              <table class="ledger-table" id="incomeTable">
+                <thead>
+                  <tr>
+                    <th>Income Name / Source</th>
+                    <th class="num">Amount</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+
+                <tbody id="incomeBody"></tbody>
+
+                <tfoot>
+                  <tr>
+                    <td colspan="2" data-label="Total Income">Total Income</td>
+                    <td colspan="2" class="num positive" id="incomeTotalCell">₹0.00</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <p class="empty-state" id="incomeEmpty">
+              No income recorded for this month yet.
+            </p>
+          </article>
+        </div>
+
+        <footer class="page-footer">
+          <span aria-hidden="true">✳</span>
+          Your progress is worth celebrating, no matter how small.
+        </footer>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- TOOLTIP AND NOTIFICATION -->
+  <div class="tooltip" id="tooltip" role="status" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- KEEP YOUR EXISTING JAVASCRIPT FILE -->
+  <script src="script.js"></script>
+</body>
+</html>
